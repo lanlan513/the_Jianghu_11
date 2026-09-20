@@ -1,0 +1,180 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Noto Serif SC', SimSun, serif;
+  line-height: 1.8;
+  font-weight: 400;
+  color: #1a1a1a;
+  background-color: #f5f0e6;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #f5f0e6;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+#root {
+  min-height: 100vh;
+}
+
+@layer components {
+  .ink-border {
+    @apply relative;
+  }
+  
+  .ink-border::before {
+    content: '';
+    @apply absolute inset-0 border border-ink-800/20 pointer-events-none;
+    border-radius: inherit;
+    box-shadow: inset 0 0 20px rgba(26, 26, 26, 0.03);
+  }
+  
+  .ink-divider {
+    @apply relative h-px bg-gradient-to-r from-transparent via-ink-800/30 to-transparent my-8;
+  }
+  
+  .ink-divider::after {
+    content: '◆';
+    @apply absolute left-1/2 -translate-x-1/2 -top-2 text-ink-800/30 text-xs bg-ink-100 px-2;
+  }
+  
+  .seal-stamp {
+    @apply relative inline-block px-4 py-1 bg-cinnabar-600 text-ink-100 font-brush text-sm transform rotate-[-3deg] shadow-brush;
+    clip-path: polygon(2% 5%, 95% 0%, 100% 90%, 5% 100%);
+  }
+  
+  .scroll-container {
+    @apply relative bg-ink-100 p-8 shadow-ink;
+    background: linear-gradient(180deg, 
+      rgba(245, 240, 230, 0) 0%, 
+      rgba(245, 240, 230, 1) 3%, 
+      rgba(245, 240, 230, 1) 97%, 
+      rgba(245, 240, 230, 0) 100%
+    );
+  }
+  
+  .scroll-container::before,
+  .scroll-container::after {
+    content: '';
+    @apply absolute left-0 right-0 h-4 bg-gradient-to-b from-ink-800/10 to-transparent;
+  }
+  
+  .scroll-container::before {
+    @apply top-0;
+  }
+  
+  .scroll-container::after {
+    @apply bottom-0 rotate-180;
+  }
+  
+  .ink-card {
+    @apply relative bg-ink-50 border border-ink-200 transition-all duration-300 overflow-hidden;
+  }
+  
+  .ink-card:hover {
+    @apply shadow-ink-hover -translate-y-1;
+  }
+  
+  .ink-card::before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-full opacity-0 transition-opacity duration-300 pointer-events-none;
+    background: radial-gradient(ellipse at center top, rgba(212, 175, 55, 0.15) 0%, transparent 60%);
+  }
+  
+  .ink-card:hover::before {
+    @apply opacity-100;
+  }
+  
+  .sword-attribute-bar {
+    @apply relative h-2 bg-ink-200 rounded-full overflow-hidden;
+  }
+  
+  .sword-attribute-bar-fill {
+    @apply absolute top-0 left-0 h-full bg-gradient-to-r from-gold-400 to-gold-600 transition-all duration-700 ease-out;
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+  }
+  
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+  
+  .brush-stroke {
+    @apply relative;
+  }
+  
+  .brush-stroke::after {
+    content: '';
+    @apply absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-cinnabar-600 via-cinnabar-400 to-transparent opacity-60;
+    transform: skewX(-12deg);
+  }
+}
+
+@layer utilities {
+  .text-shadow-ink {
+    text-shadow: 2px 2px 4px rgba(26, 26, 26, 0.1);
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@keyframes inkRipple {
+  0% {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.ink-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ink-ripple::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(26, 26, 26, 0.1) 10%, transparent 10.01%);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transform: scale(10, 10);
+  opacity: 0;
+  transition: transform 0.5s, opacity 1s;
+}
+
+.ink-ripple:active::after {
+  transform: scale(0, 0);
+  opacity: 0.3;
+  transition: 0s;
+}
