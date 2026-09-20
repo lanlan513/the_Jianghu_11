@@ -1,0 +1,8 @@
+{
+  "name": "sword-ink",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test": "node test.js"
+  }
+}
